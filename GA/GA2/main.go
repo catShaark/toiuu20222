@@ -20,6 +20,7 @@ type thanhphan struct {
 	giatri float64
 }
 
+// cuc tieu ham x^2 -4x +5
 func main() {
 	// Generate initial population
 	fmt.Println("start")
