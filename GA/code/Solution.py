@@ -1,4 +1,5 @@
 import random
+import read_file
 
 class Solution():
     def __init__(self, input) -> None:
@@ -82,7 +83,25 @@ class Solution():
         
         self.dotuongdong = self._do_tuong_dong_giua_cac_do_an + self._do_tuong_dong_giua_do_an_va_giao_vien
         return True
-    
+    def tinhk_xy(self):
+        k_x = {}
+        for i in range(self.K):
+            k_x[i] = []
+        
+        for i in range(self.N):
+            k_x[self.x[i]] = k_x[self.x[i]] + [i]
+
+        k_y = {}
+        for i in range(self.K):
+            k_y[i] = []
+        
+        for i in range(self.M):
+            k_y[self.y[i]] = k_y[self.y[i]] + [i]
+
+        self.k_x = k_x
+        self.k_y = k_y
+
+
     def _DA_and_DA(self):
         self._do_tuong_dong_giua_cac_do_an = 0
         for xs in self.k_x.values():
@@ -108,3 +127,15 @@ class Solution():
                         self._do_tuong_dong_giua_do_an_va_giao_vien += self.g[DA][GV]
         return True
 
+
+FILE_NAME = "Small/input_6_4_2.txt"
+
+input = read_file.read(FILE_NAME)
+sol = Solution(input)
+sol.x = [1, 1, 0, 0, 0, 1]
+sol.y = [0, 1, 0, 1]
+sol.tinhk_xy()
+print(sol.k_x)
+print(sol.k_y)
+sol.rang_buoc()
+print(sol.dotuongdong)

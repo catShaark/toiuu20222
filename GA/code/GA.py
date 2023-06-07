@@ -38,7 +38,14 @@ class GA():
             self.evaluate_population()
             # sap xep, chon loc
             self.sort_selective()
+    def reproductionss(self):
+        # lai 
 
+        # dot bien
+
+        # init
+        return
+    
     def print_gen(self, gen):
         with open(self.path_output, 'a') as file:
             # Ghi các lời gọi print vào file
@@ -50,7 +57,6 @@ class GA():
     def sort_selective(self):
         fitness = self.fitness
         sorted_lose = sorted(fitness, key=lambda x: x[1], reverse=True)
-        print(sorted_lose)
         self.top_fitness = sorted_lose[0]
         self.expulsion_set = [sol_lose[0] for sol_lose in sorted_lose[self.n_pop - self.remove:]]
     
@@ -64,7 +70,7 @@ class GA():
         while(len(self.pop) <= self.n_pop):
             current_time = time.time()  # Lấy thời gian hiện tại
             elapsed_time = current_time - start_time  # Tính thời gian đã trôi qua
-            if elapsed_time >= 60:  # Kiểm tra nếu đã đạt đến thời gian kết thúc (ví dụ: 60 giây - 1 phút)
+            if elapsed_time >= 600:  # Kiểm tra nếu đã đạt đến thời gian kết thúc (ví dụ: 60 giây - 1 phút)
                 self.n_pop = len(self.pop)
                 break  # Thoát khỏi vòng lặp
 
@@ -88,17 +94,15 @@ input = read_file.read(FILE_NAME)
 
 sol = Solution.Solution(input)
 
-N = 5
+N = 20
 Gen = 100
 
 ga = GA(N, Gen, sol)
 ga.initialize_population()
 ga.evaluate_population()
+print(ga.fitness)
 ga.sort_selective()
 ga.print_gen(0)
 
 print(ga.top_fitness)
 print(ga.expulsion_set)
-# print(ga.fitness)
-# for i in ga.pop:
-#     print(i.x)
