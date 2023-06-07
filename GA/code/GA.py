@@ -31,25 +31,9 @@ g = [
 ]
 
 sol = Solution.Solution(N,M,K,t,s,g,a,b,c,d,e,f)
-
-
-# print(sol.rang_buoc())
-print("----")
-# print(sol.x[N-1])
 while(1):
     sol.init_Sol()
     if sol.rang_buoc():
         break
 print(sol.x)
-# print(sol.k_x)
-
 print(sol.y)
-# print(sol.k_y)
-# print("-----")
-# # print(sol.s[0][1])
-# print(sol._DA_and_DA())
-# print(sol.Do_tuong_dong_giua_cac_do_an)
-# print("-----")
-# print(sol.g[5][1])
-# print(sol._GV_and_DA())
-# print(sol.Do_tuong_dong_giua_do_an_va_giao_vien)
