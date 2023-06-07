@@ -7,6 +7,18 @@ BTL gồm 3 giải thuật:
 
 3, GA
 
+Dữ liệu nằm trong file Dataset/Small/input_6_4_2.txt (tương tự với các bộ dữ liệu khác):
+
+dòng đầu tiên gồm 3 số nguyên N, M, K
+
+dòng thứ hai gồm 6 số nguyên tương ứng với a, b, c, d, e, f
+
+dòng thứ ba gồm N số nguyên tương ứng với t(i) giáo viên hướng dẫn đồ án i
+
+dòng thứ tư đến 4+N ma trận s(i, j)
+
+dòng thứ 5+N đến 5+2N ma trận g(i, j)
+
 Bộ dữ liệu gồm 4 loại theo (N, M, K):
 
 1, Small:
@@ -46,5 +58,5 @@ Bộ dữ liệu gồm 4 loại theo (N, M, K):
     (20, 18, 6)
 
     (22, 20, 8)
-    
+
     (22, 20, 10)
