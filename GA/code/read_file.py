@@ -33,4 +33,11 @@ g = [
 ]
 
 def read(path): 
-    return N,M,K,t,s,g,a,b,c,d,e,f
+    path_read = "/Users/duongdong/toiuu20222/Dataset/" + path
+
+
+
+
+    path_out = path.replace("input", "output")
+    path_output = "/Users/duongdong/toiuu20222/Output/GA/" + path_out
+    return path_output,N,M,K,t,s,g,a,b,c,d,e,f

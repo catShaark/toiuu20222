@@ -2,7 +2,8 @@ import random
 
 class Solution():
     def __init__(self, input) -> None:
-        N, M, K, t, s, g, a, b, c, d, e, f = input
+        pathout, N, M, K, t, s, g, a, b, c, d, e, f = input
+
         self.N = N
         self.M = M
         self.K = K
@@ -25,6 +26,8 @@ class Solution():
         self.dotuongdong = 0
         self._do_tuong_dong_giua_cac_do_an = 0
         self._do_tuong_dong_giua_do_an_va_giao_vien = 0
+
+        self.path_output = pathout
 
     def init_Sol(self):
         x = []
