@@ -1,0 +1,105 @@
+import copy
+import random
+
+class Solution():
+    def __init__(self, N, M, K, t, s, g, a, b, c, d, e, f) -> None:
+        self.N = N
+        self.M = M
+        self.K = K
+        self.t = t
+        self.s = s
+        self.g = g
+        self.a = a
+        self.b = b
+        self.c = c
+        self.d = d
+        self.e = e
+        self.f = f
+        
+        self.x = None
+        self.y = None
+
+        self.k_x = dict()
+        self.k_y = dict()
+        
+        self.Do_tuong_dong_giua_cac_do_an = 0
+        self.Do_tuong_dong_giua_do_an_va_giao_vien = 0
+
+    def init_Sol(self):
+        x = []
+        k_x = {}
+        for i in range(self.K):
+            k_x[i] = []
+        
+        for i in range(self.N):
+            random_number = random.randint(0, self.K - 1)
+            x.append(random_number)
+            k_x[random_number] = k_x[random_number] + [i]
+        
+        self.x = x
+        self.k_x = k_x
+
+        y = []
+        k_y = {}
+        for i in range(self.K):
+            k_y[i] = []
+
+        for i in range(self.M):
+            random_number = random.randint(0, self.K - 1)
+            y.append(random_number)
+            k_y[random_number] = k_y[random_number] + [i]
+        
+        self.k_y = k_y
+        self.y = y
+
+    def rang_buoc(self)->bool:
+        # RB1
+        for so_DA in self.k_x.values():       
+            if (len(so_DA) > self.b) or (len(so_DA) < self.a):
+                # print("RB1", so_DA)
+                return False
+        # RB2
+        for so_GV in self.k_y.values():       
+            if (len(so_GV) > self.d) or (len(so_GV) < self.c):
+                # print("RB2", so_GV)
+                return False
+        # RB3
+        for i in range(self.N):
+            if self.x[i] == self.y[self.t[i] - 1]:
+                # print("RB3", i)
+                return False
+            
+        # RB4 do tuong dong DA&DA
+        if not self._DA_and_DA():
+            return False
+        # RB5 do tuong dong GV&DA
+        if not self._GV_and_DA():
+            return False
+        
+        return True
+    
+    def _DA_and_DA(self):
+        self.Do_tuong_dong_giua_cac_do_an = 0
+        for xs in self.k_x.values():
+            for DA1 in xs:
+                for DA2 in xs:
+                    if DA1 == DA2: continue
+                    if self.s[DA1][DA2] < self.e:
+                        print(DA1,DA2)
+                        return False
+                    else:
+                        self.Do_tuong_dong_giua_cac_do_an += self.s[DA1][DA2]
+        return True
+    
+    def _GV_and_DA(self):
+        self.Do_tuong_dong_giua_do_an_va_giao_vien = 0
+        for k in range(self.K):
+            for GV in self.k_y[k]:
+                for DA in self.k_x[k]:
+                    if self.g[DA][GV] < self.f:
+                        print(GV,DA)
+                        return False
+                    else:
+                        self.Do_tuong_dong_giua_do_an_va_giao_vien += self.g[DA][GV]
+        return True
+
