@@ -132,8 +132,8 @@ FILE_NAME = "Small/input_6_4_2.txt"
 
 input = read_file.read(FILE_NAME)
 sol = Solution(input)
-sol.x = [1, 1, 0, 0, 0, 1]
-sol.y = [0, 1, 0, 1]
+sol.x = [1, 0, 1, 0, 0, 0]
+sol.y = [0, 1, 1, 0]
 sol.tinhk_xy()
 print(sol.k_x)
 print(sol.k_y)

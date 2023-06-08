@@ -40,11 +40,18 @@ class GA():
             self.sort_selective()
     def reproductionss(self):
         # lai 
+        child = []
+        child_tmp, err = self.laighep()
 
         # dot bien
+        child_tmp2, err = self.dotbien()
 
+        add = 0
+        if len(child) < len(self.expulsion_set):
+            add = len(self.expulsion_set) - len(child)
         # init
-        return
+
+        
     
     def print_gen(self, gen):
         with open(self.path_output, 'a') as file:
