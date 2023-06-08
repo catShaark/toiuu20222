@@ -39,5 +39,5 @@ def read(path):
         g.append(g_tmp)
 
     path_out = path.replace("input", "output")
-    path_output = "/Users/duongdong/toiuu20222/Output/GA/" + path_out
+    path_output = "/Users/duongdong/toiuu20222/GA/Output/" + path_out
     return path_output,N,M,K,t,s,g,a,b,c,d,e,f
