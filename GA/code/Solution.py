@@ -1,5 +1,4 @@
 import random
-import read_file
 
 class Solution():
     def __init__(self, input) -> None:
@@ -126,16 +125,3 @@ class Solution():
                     else:
                         self._do_tuong_dong_giua_do_an_va_giao_vien += self.g[DA][GV]
         return True
-
-
-FILE_NAME = "Small/input_6_4_2.txt"
-
-input = read_file.read(FILE_NAME)
-sol = Solution(input)
-sol.x = [1, 0, 1, 0, 0, 0]
-sol.y = [0, 1, 1, 0]
-sol.tinhk_xy()
-print(sol.k_x)
-print(sol.k_y)
-sol.rang_buoc()
-print(sol.dotuongdong)

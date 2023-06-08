@@ -3,14 +3,13 @@ import copy
 import time
 
 import Solution
-import read_file
 
-class GA():
-    def __init__(self, N, Gen, sol:Solution) -> None:
+class Ga():
+    def __init__(self, N, Gen, remove, sol:Solution) -> None:
         self.sol_sample = sol
         self.Gen = Gen
         self.n_pop = N
-        self.remove = 3
+        self.remove = remove
 
         self.pop = []
         self.fitness = []
@@ -77,7 +76,7 @@ class GA():
         while(len(self.pop) <= self.n_pop):
             current_time = time.time()  # Lấy thời gian hiện tại
             elapsed_time = current_time - start_time  # Tính thời gian đã trôi qua
-            if elapsed_time >= 600:  # Kiểm tra nếu đã đạt đến thời gian kết thúc (ví dụ: 60 giây - 1 phút)
+            if elapsed_time >= 6:  # Kiểm tra nếu đã đạt đến thời gian kết thúc (ví dụ: 60 giây - 1 phút)
                 self.n_pop = len(self.pop)
                 break  # Thoát khỏi vòng lặp
 
@@ -95,21 +94,3 @@ class GA():
         return True
         
 
-FILE_NAME = "Small/input_6_4_2.txt"
-
-input = read_file.read(FILE_NAME)
-
-sol = Solution.Solution(input)
-
-N = 20
-Gen = 100
-
-ga = GA(N, Gen, sol)
-ga.initialize_population()
-ga.evaluate_population()
-print(ga.fitness)
-ga.sort_selective()
-ga.print_gen(0)
-
-print(ga.top_fitness)
-print(ga.expulsion_set)
