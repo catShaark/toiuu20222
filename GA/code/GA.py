@@ -26,6 +26,7 @@ class Ga():
             file.truncate(0)
         # khoi toa quan the
         self.initialize_population()
+        print(self.pop[0])
         # tinh ham muc tieu
         self.evaluate_population()
         # sap xep chon loc
@@ -72,7 +73,7 @@ class Ga():
         while(len(childs_return) < len(self.expulsion_set)):
             current_time = time.time()  # Lấy thời gian hiện tại
             elapsed_time = current_time - start_time  # Tính thời gian đã trôi qua
-            if elapsed_time >= 12:  # Kiểm tra nếu đã đạt đến thời gian kết thúc (ví dụ: 60 giây - 1 phút)
+            if elapsed_time >= 10:  # Kiểm tra nếu đã đạt đến thời gian kết thúc (ví dụ: 60 giây - 1 phút)
                 for hi in self.expulsion_set:
                     sol_new = copy.deepcopy(self.pop[hi])
                     childs_return.append(sol_new)
@@ -115,7 +116,7 @@ class Ga():
         while(len(self.pop) <= self.n_pop):
             current_time = time.time()  # Lấy thời gian hiện tại
             elapsed_time = current_time - start_time  # Tính thời gian đã trôi qua
-            if elapsed_time >= 12:  # Kiểm tra nếu đã đạt đến thời gian kết thúc (ví dụ: 60 giây - 1 phút)
+            if elapsed_time >= 60:  # Kiểm tra nếu đã đạt đến thời gian kết thúc (ví dụ: 60 giây - 1 phút)
                 self.n_pop = len(self.pop)
                 break  # Thoát khỏi vòng lặp
 

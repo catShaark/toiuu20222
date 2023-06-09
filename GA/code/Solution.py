@@ -108,7 +108,6 @@ class Solution():
                 for DA2 in xs:
                     if DA1 == DA2: continue
                     if self.s[DA1][DA2] < self.e:
-                        print(DA1,DA2)
                         return False
                     else:
                         self._do_tuong_dong_giua_cac_do_an += self.s[DA1][DA2]
