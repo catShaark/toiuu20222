@@ -39,6 +39,7 @@ class Ga():
             self.evaluate_population()
             # sap xep, chon loc
             self.sort_selective()
+
     def reproductionss(self):
         child = []
         # lai 
@@ -90,6 +91,42 @@ class Ga():
             self.pop[i_sol] = element_to_remove
             childs_return.remove(element_to_remove)
         
+    def print_gen(self, gen):
+        with open(self.path_output, 'a') as file:
+            # Ghi các lời gọi print vào file
+            print("Gen: {}".format(gen + 1), file=file)
+            print("    fitniss:{}".format(self.top_fitness[1]), file=file)
+            print("    x:{} |y:{}".format(self.pop[self.top_fitness[0]].x, self.pop[self.top_fitness[0]].y), file=file)
+            print("", file=file)
+
+    def sort_selective(self):
+        fitness = self.fitness
+        sorted_lose = sorted(fitness, key=lambda x: x[1], reverse=True)
+        self.top_fitness = sorted_lose[0]
+        self.expulsion_set = [sol_lose[0] for sol_lose in sorted_lose[self.n_pop - self.remove:]]
+    
+    def evaluate_population(self):
+        for i in range(self.n_pop):
+            fit = [i, self.pop[i].dotuongdong]
+            self.fitness.append(fit)
+
+    def initialize_population(self):
+        start_time = time.time() 
+        while(len(self.pop) <= self.n_pop):
+            current_time = time.time()  # Lấy thời gian hiện tại
+            elapsed_time = current_time - start_time  # Tính thời gian đã trôi qua
+            if elapsed_time >= 12:  # Kiểm tra nếu đã đạt đến thời gian kết thúc (ví dụ: 60 giây - 1 phút)
+                self.n_pop = len(self.pop)
+                break  # Thoát khỏi vòng lặp
+
+            sol_init = copy.deepcopy(self.sol_sample)
+            sol_init.init_Sol()
+            if (sol_init.rang_buoc()) and (self._sol_not_in_pop(sol_init)):
+                self.pop.append(sol_init)
+            else:
+                del sol_init
+
+
     def _laighep(self,sol1_id, sol2_id):
         child = []
 
@@ -151,42 +188,8 @@ class Ga():
             return sol_child, True
         else:
             return None, False
-    
-    def print_gen(self, gen):
-        with open(self.path_output, 'a') as file:
-            # Ghi các lời gọi print vào file
-            print("Gen: {}".format(gen + 1), file=file)
-            print("    fitniss:{}".format(self.top_fitness[1]), file=file)
-            print("    x:{} |y:{}".format(self.pop[self.top_fitness[0]].x, self.pop[self.top_fitness[0]].y), file=file)
-            print("", file=file)
 
-    def sort_selective(self):
-        fitness = self.fitness
-        sorted_lose = sorted(fitness, key=lambda x: x[1], reverse=True)
-        self.top_fitness = sorted_lose[0]
-        self.expulsion_set = [sol_lose[0] for sol_lose in sorted_lose[self.n_pop - self.remove:]]
-    
-    def evaluate_population(self):
-        for i in range(self.n_pop):
-            fit = [i, self.pop[i].dotuongdong]
-            self.fitness.append(fit)
 
-    def initialize_population(self):
-        start_time = time.time() 
-        while(len(self.pop) <= self.n_pop):
-            current_time = time.time()  # Lấy thời gian hiện tại
-            elapsed_time = current_time - start_time  # Tính thời gian đã trôi qua
-            if elapsed_time >= 12:  # Kiểm tra nếu đã đạt đến thời gian kết thúc (ví dụ: 60 giây - 1 phút)
-                self.n_pop = len(self.pop)
-                break  # Thoát khỏi vòng lặp
-
-            sol_init = copy.deepcopy(self.sol_sample)
-            sol_init.init_Sol()
-            if (sol_init.rang_buoc()) and (self._sol_not_in_pop(sol_init)):
-                self.pop.append(sol_init)
-            else:
-                del sol_init
-                
     def _sol_not_in_pop(self, sol_test:Solution):
         for sol_i in self.pop:
             if (sol_i.x == sol_test.x):
