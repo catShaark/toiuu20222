@@ -60,17 +60,14 @@ class Solution():
         # RB1
         for so_DA in self.k_x.values():       
             if (len(so_DA) > self.b) or (len(so_DA) < self.a):
-                # print("RB1", so_DA)
                 return False
         # RB2
         for so_GV in self.k_y.values():       
             if (len(so_GV) > self.d) or (len(so_GV) < self.c):
-                # print("RB2", so_GV)
                 return False
         # RB3
         for i in range(self.N):
             if self.x[i] == self.y[self.t[i] - 1]:
-                # print("RB3", i)
                 return False
             
         # RB4 do tuong dong DA&DA
@@ -82,6 +79,7 @@ class Solution():
         
         self.dotuongdong = self._do_tuong_dong_giua_cac_do_an + self._do_tuong_dong_giua_do_an_va_giao_vien
         return True
+    
     def tinhk_xy(self):
         k_x = {}
         for i in range(self.K):

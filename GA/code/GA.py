@@ -26,7 +26,6 @@ class Ga():
             file.truncate(0)
         # khoi toa quan the
         self.initialize_population()
-        print(self.pop[0])
         # tinh ham muc tieu
         self.evaluate_population()
         # sap xep chon loc
@@ -64,9 +63,6 @@ class Ga():
             if self._sol_not_in_pop(chi) == True:
                 if self._not_in(chi, childs_return) == True:
                     childs_return.append(chi)
-
-        for i in childs_return:
-            print("dotuongdong1:{}| x:{} |y:{}".format(i.dotuongdong, i.x, i.y))
 
         # init
         start_time = time.time()

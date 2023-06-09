@@ -34,11 +34,11 @@ for name, NMK in data.items():
     
     N,M,K = NMK
     # so DA_min ~= (N/K)-1
-    a = random.randint(1, max(1, int(N/K)) - 1)
-    b = random.randint(a + 2, int(N/K) + a)
+    a = 1
+    b = N - K + 1 
     # so GV ~= (M/K) - 1
-    c = random.randint(1, max(1, int(M/K) - 1))
-    d = random.randint(a , M - K + 1)
+    c = 1
+    d = M - K + 1
     # dotuongdong
     e = random.randint(1,3)
     f = random.randint(1,3)
