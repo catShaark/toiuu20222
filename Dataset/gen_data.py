@@ -60,8 +60,9 @@ for name, NMK in data.items():
         s_row = []
         while(len(s_row) < N):
             if len(s_row) == top: s_row.append(0)
-            dotuongdong = random.randint(1,10)
-            s_row.append(dotuongdong)
+            else:
+                dotuongdong = random.randint(1,10)
+                s_row.append(dotuongdong)
         s.append(s_row)
         top += 1
 
