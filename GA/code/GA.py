@@ -6,11 +6,11 @@ import random
 import Solution
 
 class Ga():
-    def __init__(self, N, Gen, remove, sol:Solution) -> None:
+    def __init__(self, N, Gen, sol:Solution) -> None:
         self.sol_sample = sol
         self.Gen = Gen
         self.n_pop = N
-        self.remove = remove
+        self.remove = int(N/3)
         self.mutation_rate = 0.8
 
         self.pop = []
@@ -114,6 +114,7 @@ class Ga():
             elapsed_time = current_time - start_time  # Tính thời gian đã trôi qua
             if elapsed_time >= 60:  # Kiểm tra nếu đã đạt đến thời gian kết thúc (ví dụ: 60 giây - 1 phút)
                 self.n_pop = len(self.pop)
+                self.remove = int(self.n_pop/3)
                 break  # Thoát khỏi vòng lặp
 
             sol_init = copy.deepcopy(self.sol_sample)
