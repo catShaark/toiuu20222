@@ -1,4 +1,4 @@
-
+import time
 
 class Bob():
     def __init__(self, input) -> None:
@@ -24,6 +24,7 @@ class Bob():
         self.fit = 0
         self.k_x = dict()
         self.k_y = dict()
+        self.time_start = time.time() 
         # output
         self.x_good = None
         self.y_good = None
@@ -53,9 +54,13 @@ class Bob():
                     self.x_good = self.x
                     self.y_good = self.y
         else:
-            for i in range(self.K):
-                a[t] = i
-                self.try_bob(a, t+1)
+            current_time = time.time() 
+            if current_time - self.time_start > 600:
+                return
+            else:
+                for i in range(self.K):
+                    a[t] = i
+                    self.try_bob(a, t+1)
 
     def tinhk_xy(self):
         k_x = {}
