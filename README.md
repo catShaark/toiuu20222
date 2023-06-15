@@ -7,6 +7,8 @@ BTL gồm 3 giải thuật:
 
 3, GA
 
+4, Bob
+
 Dữ liệu nằm trong file Dataset/Small/input_6_4_2.txt (tương tự với các bộ dữ liệu khác):
 
 dòng đầu tiên gồm 3 số nguyên N, M, K
