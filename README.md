@@ -1,5 +1,5 @@
 # toiuu20222
-BTL gồm 3 giải thuật:
+BTL gồm 4 giải thuật:
 
 1, IP
 
