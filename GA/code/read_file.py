@@ -1,6 +1,6 @@
 
 def read(path): 
-    input_path = "/Users/duongdong/toiuu20222/Dataset/" + path
+    input_path = "./Dataset/" + path
 
     with open(input_path, "r") as f:
         lines = f.read().splitlines()
@@ -17,13 +17,8 @@ def read(path):
     e = int(e)
     f = int(f)
 
-    t = []
-    t_tmp = lines[2].strip().split()
-    for i in t_tmp:
-        t.append(int(i))
-
     s = []
-    for i in range(3, N+3):
+    for i in range(2, N+2):
         s_tmps = lines[i].strip().split()
         s_tmp = []
         for i in s_tmps:
@@ -31,13 +26,18 @@ def read(path):
         s.append(s_tmp)
     
     g = []
-    for i in range(N+3, 2*N+3):
+    for i in range(N+2, 2*N+2):
         g_tmps = lines[i].strip().split()
         g_tmp = []
         for i in g_tmps:
             g_tmp.append(int(i))
         g.append(g_tmp)
 
+    t = []
+    t_tmp = lines[2*N+2].strip().split()
+    for i in t_tmp:
+        t.append(int(i))
+    
     path_out = path.replace("input", "output")
-    path_output = "/Users/duongdong/toiuu20222/GA/Output/" + path_out
+    path_output = "./GA/Output/" + path_out
     return path_output,N,M,K,t,s,g,a,b,c,d,e,f

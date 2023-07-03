@@ -25,7 +25,7 @@ data["Extra-large/input_40_18_12.txt"] = [40, 18, 12]
 data["Extra-large/input_40_20_14.txt"] = [40, 20, 14]
 data["Extra-large/input_50_24_16.txt"] = [50, 24, 16]
 
-path = "/Users/duongdong/toiuu20222/Dataset/"
+path = "./Dataset/"
 for name, NMK in data.items():
     path_input = path + name
     # xoa trang
@@ -40,8 +40,8 @@ for name, NMK in data.items():
     c = 1
     d = M - K + 1
     # dotuongdong
-    e = random.randint(1,3)
-    f = random.randint(1,3)
+    e = 1
+    f = 1
     # t(i): do an i do ai huowng dan
     t = []
     while(len(t) < N):
@@ -54,17 +54,13 @@ for name, NMK in data.items():
         else:
             t.append(gv)
     # s(i)
-    s = []
-    top = 0
-    while(len(s) < N):
-        s_row = []
-        while(len(s_row) < N):
-            if len(s_row) == top: s_row.append(0)
-            else:
-                dotuongdong = random.randint(1,10)
-                s_row.append(dotuongdong)
-        s.append(s_row)
-        top += 1
+    s = zeros_matrix = [[0 for _ in range(N)] for _ in range(N)]
+    for i in range(N):
+        for j in range(i, N):
+            if i == j: continue
+            dotuongdong = random.randint(1,10)
+            s[i][j] = dotuongdong
+            s[j][i] = dotuongdong
 
     # g(i)
     g = []
@@ -80,9 +76,6 @@ for name, NMK in data.items():
         print("{} {} {}".format(N, M, K), file=file)
         print("{} {} {} {} {} {}".format(a, b, c, d, e, f), file=file)
 
-        line = " ".join(str(element) for element in t)
-        file.write(line + "\n")
-
         for row in s:
             line = " ".join(str(element) for element in row)
             file.write(line + "\n")
@@ -91,5 +84,6 @@ for name, NMK in data.items():
             line = " ".join(str(element) for element in row)
             file.write(line + "\n")
 
-    
+        line = " ".join(str(element) for element in t)
+        file.write(line + "\n")
 

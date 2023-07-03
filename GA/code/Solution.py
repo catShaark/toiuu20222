@@ -67,6 +67,7 @@ class Solution():
                 return False
         # RB3
         for i in range(self.N):
+
             if self.x[i] == self.y[self.t[i] - 1]:
                 return False
             
@@ -77,7 +78,7 @@ class Solution():
         if not self._GV_and_DA():
             return False
         
-        self.dotuongdong = self._do_tuong_dong_giua_cac_do_an + self._do_tuong_dong_giua_do_an_va_giao_vien
+        self.dotuongdong = self._do_tuong_dong_giua_cac_do_an/2 + self._do_tuong_dong_giua_do_an_va_giao_vien
         return True
     
     def tinhk_xy(self):
@@ -117,7 +118,6 @@ class Solution():
             for GV in self.k_y[k]:
                 for DA in self.k_x[k]:
                     if self.g[DA][GV] < self.f:
-                        print(GV,DA)
                         return False
                     else:
                         self._do_tuong_dong_giua_do_an_va_giao_vien += self.g[DA][GV]
