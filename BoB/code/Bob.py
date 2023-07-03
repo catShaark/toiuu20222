@@ -101,7 +101,7 @@ class Bob():
         if not self._GV_and_DA():
             return False
         
-        self.fit = self._do_tuong_dong_giua_cac_do_an + self._do_tuong_dong_giua_do_an_va_giao_vien
+        self.fit = self._do_tuong_dong_giua_cac_do_an/2 + self._do_tuong_dong_giua_do_an_va_giao_vien
         return True
     
     def _DA_and_DA(self):
