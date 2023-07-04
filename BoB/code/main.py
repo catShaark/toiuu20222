@@ -3,7 +3,7 @@ from Bob import *
 
 data = {}
 # Small
-# data["Small/input_6_4_2.txt"] = [6, 4, 2]
+data["Small/input_6_4_2.txt"] = [6, 4, 2]
 # data["Small/input_8_4_3.txt"] = [8, 4, 3]
 # data["Small/input_10_4_3.txt"] = [10, 4, 3]
 # data["Small/input_10_6_3.txt"] = [10, 6, 3]
