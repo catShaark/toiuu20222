@@ -1,124 +1,196 @@
 import random
 
+
+
+def distribute_candies(min_per_person, max_per_person, num_people, num_candies) -> list:
+    candies_allocation = num_people * [min_per_person]
+
+    left_out_candies = num_candies - num_people * min_per_person
+
+    max_addtional_candies = max_per_person - min_per_person
+
+    left_people = num_people 
+    for i in range(num_people):
+        left_people -= 1
+        must_give_to_this_person = left_out_candies - left_people * max_addtional_candies
+        if must_give_to_this_person > 0:
+            candies_allocation[i] += must_give_to_this_person
+            left_out_candies -= must_give_to_this_person
+        else:
+            addtional_candies_to_this_person = random.randint(0, min(max_addtional_candies, left_out_candies))
+            candies_allocation[i] += addtional_candies_to_this_person
+            left_out_candies -= addtional_candies_to_this_person
+    
+    return candies_allocation
+
+def range_exclude(begin, end, exclude):
+    l = []
+
+    for i in range(begin, end):
+        if i not in exclude:
+            l.append(i)
+
+    return l
+
 class Solution():
     def __init__(self, input) -> None:
         pathout, N, M, K, t, s, g, a, b, c, d, e, f = input
 
-        self.N = N
-        self.M = M
-        self.K = K
-        self.t = t
-        self.s = s
-        self.g = g
-        self.a = a
-        self.b = b
-        self.c = c
-        self.d = d
-        self.e = e
-        self.f = f
+        self.num_thesis = N
+        self.num_teacher = M
+        self.num_council = K
+        self.thesis_teacher = t
+        self.thesis_similarity_matrix = s
+        self.thesis_teacher_similarity_matrix = g
+        self.num_thesis_in_council_lower_bound = a
+        self.num_thesis_in_council_upper_bound = b
+        self.num_teacher_in_council_lower_bound = c
+        self.num_teacher_in_council_upper_bound = d
+        self.thesis_similarity_lower_bound = e
+        self.thesis_teacher_similarity_lower_bound = f
         
-        self.x = None
-        self.y = None
+        self.thesis_allocation = self.num_thesis * [None]
+        self.teacher_allocation = self.num_teacher * [None]
 
-        self.k_x = dict()
-        self.k_y = dict()
+        self.thesis_allocation_map = dict()
+        self.teacher_allocation_map = dict()
         
-        self.dotuongdong = 0
-        self._do_tuong_dong_giua_cac_do_an = 0
-        self._do_tuong_dong_giua_do_an_va_giao_vien = 0
+        self.total_similarity = 0
+        self.total_thesis_similarity = 0
+        self.total_thesis_teacher_similarity = 0
 
         self.path_output = pathout
 
+        self.thesis_list = list(range(N))
+        self.teacher_list = list(range(M))
+        self.teacher_thesis = [list() for x in range(self.num_teacher)]
+        for i in range(self.num_thesis):
+
+            self.teacher_thesis[self.thesis_teacher[i]-1].append(i)
+
+
+
+    def distribute_thesis(self, banned_thesis_in_council):
+
+        num_thesis_in_council = self.num_council * [0]
+        full_council = []
+
+        for council_id in range(self.num_council):
+            random.shuffle(banned_thesis_in_council[council_id])
+            the_rest_of_the_councils = range_exclude(0, self.num_council, [council_id] + full_council)
+            random.shuffle(the_rest_of_the_councils)
+            
+            i = 0
+            for thesis_id in banned_thesis_in_council[council_id]:
+                distribute_to_council = the_rest_of_the_councils[i]
+               
+                i += 1
+                if i == len(the_rest_of_the_councils):
+                    i = 0
+
+                num_thesis_in_council[distribute_to_council] += 1
+                
+                if num_thesis_in_council[distribute_to_council] == self.num_thesis_in_council_upper_bound:
+                    full_council.append(distribute_to_council)
+                    the_rest_of_the_councils.remove(distribute_to_council)
+                    i = random.randint(0, len(the_rest_of_the_councils) - 1)
+                
+                self.thesis_allocation[thesis_id] = distribute_to_council
+                
+                
+        
+
+        
     def init_Sol(self):
-        x = []
-        k_x = {}
-        for i in range(self.K):
-            k_x[i] = []
-        
-        for i in range(self.N):
-            random_number = random.randint(0, self.K - 1)
-            x.append(random_number)
-            k_x[random_number] = k_x[random_number] + [i]
-        
-        self.x = x
-        self.k_x = k_x
+        random.shuffle(self.teacher_list)
+    
+        num_teacher_in_council = distribute_candies(self.num_teacher_in_council_lower_bound, self.num_teacher_in_council_upper_bound, self.num_council, self.num_teacher)
+        marker = 0
 
-        y = []
-        k_y = {}
-        for i in range(self.K):
-            k_y[i] = []
+        banned_thesis_in_council = [list() for i in range(self.num_council)]
 
-        for i in range(self.M):
-            random_number = random.randint(0, self.K - 1)
-            y.append(random_number)
-            k_y[random_number] = k_y[random_number] + [i]
-        
-        self.k_y = k_y
-        self.y = y
+
+        for council_id in range(self.num_council):
+            for teacher_id in self.teacher_list[marker: marker + num_teacher_in_council[council_id]]:
+                self.teacher_allocation[teacher_id] = council_id
+                for thesis_id in self.teacher_thesis[teacher_id]:
+                    banned_thesis_in_council[council_id].append(thesis_id)
+            marker += num_teacher_in_council[council_id]
+  
+
+        self.distribute_thesis(banned_thesis_in_council)  
+
+        self.tinhk_xy()
+
+
+
 
     def rang_buoc(self)->bool:
         # RB1
-        for so_DA in self.k_x.values():       
-            if (len(so_DA) > self.b) or (len(so_DA) < self.a):
+        for so_DA in self.thesis_allocation_map.values():
+            if (len(so_DA) > self.num_thesis_in_council_upper_bound) or (len(so_DA) < self.num_thesis_in_council_lower_bound):
                 return False
         # RB2
-        for so_GV in self.k_y.values():       
-            if (len(so_GV) > self.d) or (len(so_GV) < self.c):
+        for so_GV in self.teacher_allocation_map.values():      
+            if (len(so_GV) > self.num_teacher_in_council_upper_bound) or (len(so_GV) < self.num_teacher_in_council_lower_bound):
+
                 return False
         # RB3
-        for i in range(self.N):
+        for i in range(self.num_thesis):
 
-            if self.x[i] == self.y[self.t[i] - 1]:
+            if self.thesis_allocation[i] == self.teacher_allocation[self.thesis_teacher[i] - 1]:
+
                 return False
             
         # RB4 do tuong dong DA&DA
         if not self._DA_and_DA():
+
             return False
         # RB5 do tuong dong GV&DA
         if not self._GV_and_DA():
             return False
         
-        self.dotuongdong = self._do_tuong_dong_giua_cac_do_an/2 + self._do_tuong_dong_giua_do_an_va_giao_vien
+        self.total_similarity = self.total_thesis_similarity/2 + self.total_thesis_teacher_similarity
         return True
     
     def tinhk_xy(self):
         k_x = {}
-        for i in range(self.K):
+        for i in range(self.num_council):
             k_x[i] = []
         
-        for i in range(self.N):
-            k_x[self.x[i]] = k_x[self.x[i]] + [i]
+        for i in range(self.num_thesis):
+            k_x[self.thesis_allocation[i]] = k_x[self.thesis_allocation[i]] + [i]
 
         k_y = {}
-        for i in range(self.K):
+        for i in range(self.num_council):
             k_y[i] = []
         
-        for i in range(self.M):
-            k_y[self.y[i]] = k_y[self.y[i]] + [i]
+        for i in range(self.num_teacher):
+            k_y[self.teacher_allocation[i]] = k_y[self.teacher_allocation[i]] + [i]
 
-        self.k_x = k_x
-        self.k_y = k_y
+        self.thesis_allocation_map = k_x
+        self.teacher_allocation_map = k_y
 
 
     def _DA_and_DA(self):
-        self._do_tuong_dong_giua_cac_do_an = 0
-        for xs in self.k_x.values():
+        self.total_thesis_similarity = 0
+        for xs in self.thesis_allocation_map.values():
             for DA1 in xs:
                 for DA2 in xs:
                     if DA1 == DA2: continue
-                    if self.s[DA1][DA2] < self.e:
+                    if self.thesis_similarity_matrix[DA1][DA2] < self.thesis_similarity_lower_bound:
                         return False
                     else:
-                        self._do_tuong_dong_giua_cac_do_an += self.s[DA1][DA2]
+                        self.total_thesis_similarity += self.thesis_similarity_matrix[DA1][DA2]
         return True
     
     def _GV_and_DA(self):
-        self._do_tuong_dong_giua_do_an_va_giao_vien = 0
-        for k in range(self.K):
-            for GV in self.k_y[k]:
-                for DA in self.k_x[k]:
-                    if self.g[DA][GV] < self.f:
+        self.total_thesis_teacher_similarity = 0
+        for k in range(self.num_council):
+            for GV in self.teacher_allocation_map[k]:
+                for DA in self.thesis_allocation_map[k]:
+                    if self.thesis_teacher_similarity_matrix[DA][GV] < self.thesis_teacher_similarity_lower_bound:
                         return False
                     else:
-                        self._do_tuong_dong_giua_do_an_va_giao_vien += self.g[DA][GV]
+                        self.total_thesis_teacher_similarity += self.thesis_teacher_similarity_matrix[DA][GV]
         return True

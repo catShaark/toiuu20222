@@ -33,9 +33,9 @@ data = {}
 # data["Small/input2.txt"] = [6, 4, 2]
 # data["Small/input3.txt"] = [6, 4, 2]
 # data["Small/input4.txt"] = [6, 4, 2]
-data["Small/input5.txt"] = [6, 4, 2]
-data["Small/input6.txt"] = [6, 4, 2]
-data["Small/input7.txt"] = [6, 4, 2]
+# data["Small/input5.txt"] = [6, 4, 2]
+# data["Small/input6.txt"] = [6, 4, 2]
+data["Data/input7.txt"] = [6, 4, 2]
 # data["Small/input8.txt"] = [6, 4, 2]
 # data["Small/input9.txt"] = [6, 4, 2]
 # data["Small/input10.txt"] = [6, 4, 2]
@@ -47,8 +47,8 @@ for file_name in data.keys():
 
     sol = Solution(input)
 
-    N = 20
-    Gen = 100
+    N = 10
+    Gen = 20
 
     ga = Ga(N, Gen, sol)
     ga.run()

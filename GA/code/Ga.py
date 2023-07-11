@@ -93,7 +93,7 @@ class Ga():
             # Ghi các lời gọi print vào file
             print("Gen: {}".format(gen + 1), file=file)
             print("    fitniss:{}".format(self.top_fitness[1]), file=file)
-            print("    x:{} |y:{}".format(self.pop[self.top_fitness[0]].x, self.pop[self.top_fitness[0]].y), file=file)
+            print("    x:{} |y:{}".format(self.pop[self.top_fitness[0]].thesis_allocation, self.pop[self.top_fitness[0]].teacher_allocation), file=file)
             print("", file=file)
 
     def sort_selective(self):
@@ -104,7 +104,7 @@ class Ga():
     
     def evaluate_population(self):
         for i in range(self.n_pop):
-            fit = [i, self.pop[i].dotuongdong]
+            fit = [i, self.pop[i].total_similarity]
             self.fitness.append(fit)
 
     def initialize_population(self):
@@ -128,11 +128,11 @@ class Ga():
     def _laighep(self,sol1_id, sol2_id):
         child = []
 
-        parent1_x = copy.deepcopy(self.pop[sol1_id].x)
-        parent1_y = copy.deepcopy(self.pop[sol1_id].y)
+        parent1_x = copy.deepcopy(self.pop[sol1_id].thesis_allocation)
+        parent1_y = copy.deepcopy(self.pop[sol1_id].teacher_allocation)
 
-        parent2_x = copy.deepcopy(self.pop[sol2_id].x)
-        parent2_y = copy.deepcopy(self.pop[sol2_id].y)
+        parent2_x = copy.deepcopy(self.pop[sol2_id].thesis_allocation)
+        parent2_y = copy.deepcopy(self.pop[sol2_id].teacher_allocation)
 
         # Chọn một điểm cắt ngẫu nhiên
         crossover_point = random.randint(1, len(parent1_x)-1)
@@ -147,15 +147,15 @@ class Ga():
         sol_child1 = copy.deepcopy(self.sol_sample)
         sol_child2 = copy.deepcopy(self.sol_sample)
 
-        sol_child1.x = child1_x
-        sol_child1.y = child1_y
+        sol_child1.thesis_allocation = child1_x
+        sol_child1.teacher_allocation = child1_y
         sol_child1.tinhk_xy()
 
         if sol_child1.rang_buoc():
             child.append(sol_child1)
 
-        sol_child2.x = child2_x
-        sol_child2.y = child2_y
+        sol_child2.thesis_allocation = child2_x
+        sol_child2.teacher_allocation = child2_y
         sol_child2.tinhk_xy()
 
         if sol_child2.rang_buoc():
@@ -165,22 +165,22 @@ class Ga():
     
     def _dotbien(self, sol_id):
 
-        mutated_x = copy.deepcopy(self.pop[sol_id].x)
-        mutated_y = copy.deepcopy(self.pop[sol_id].y)
+        mutated_x = copy.deepcopy(self.pop[sol_id].thesis_allocation)
+        mutated_y = copy.deepcopy(self.pop[sol_id].teacher_allocation)
         
         for i in range(len(mutated_x)):
             if random.random() < self.mutation_rate:
-                random_number = random.randint(0, self.sol_sample.K -1)
+                random_number = random.randint(0, self.sol_sample.num_council -1)
                 mutated_x[i] = random_number  # Đột biến bit i của gen x
 
             if i < len(mutated_y):
                 if random.random() < self.mutation_rate:
-                    random_number = random.randint(0, self.sol_sample.K -1)
+                    random_number = random.randint(0, self.sol_sample.num_council -1)
                     mutated_y[i] = random_number  # Đột biến bit i của gen y
                 
         sol_child = copy.deepcopy(self.sol_sample)
-        sol_child.x = mutated_x
-        sol_child.y = mutated_y
+        sol_child.thesis_allocation = mutated_x
+        sol_child.teacher_allocation = mutated_y
         sol_child.tinhk_xy()
         if sol_child.rang_buoc():
             return sol_child, True
@@ -190,13 +190,13 @@ class Ga():
 
     def _sol_not_in_pop(self, sol_test:Solution):
         for sol_i in self.pop:
-            if (sol_i.x == sol_test.x):
-                if (sol_i.y == sol_test.y):
+            if (sol_i.thesis_allocation == sol_test.thesis_allocation):
+                if (sol_i.teacher_allocation == sol_test.teacher_allocation):
                     return False
         return True
     def _not_in(self, chi, chi_return):
         for c in chi_return:
-            if (chi.x == c.x) and (chi.y == c.y):
+            if (chi.thesis_allocation == c.thesis_allocation) and (chi.teacher_allocation == c.teacher_allocation):
                 return False
         return True
         
