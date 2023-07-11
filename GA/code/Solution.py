@@ -42,7 +42,7 @@ class Solution():
         self.thesis_teacher = t
         self.thesis_similarity_matrix = s
         self.thesis_teacher_similarity_matrix = g
-        self.num_thesis_in_council_lower_bound = a
+        self.num_thesis_in_council_upper_bound = a
         self.num_thesis_in_council_upper_bound = b
         self.num_teacher_in_council_lower_bound = c
         self.num_teacher_in_council_upper_bound = d
@@ -69,6 +69,86 @@ class Solution():
             self.teacher_thesis[self.thesis_teacher[i]-1].append(i)
 
 
+    def init_Sol(self):
+        # khoi tao k_y
+        k_y = {}
+        for i in range(self.num_council):
+            k_y[i] =[]
+
+        gv_tmp = [gv for gv in range(self.num_teacher)] 
+        for k in range(self.num_council):
+            ran = random.choice(gv_tmp)
+            k_y[k] = k_y[k] + [ran]
+            gv_tmp.remove(ran)
+
+        for k in range(self.num_council):
+            tmp_k = []
+            rand_sl = random.randint(0, min(self.num_teacher_in_council_upper_bound - 1, len(gv_tmp)))
+            
+            for i in range(rand_sl):
+                rand_ = random.choice(gv_tmp)
+                tmp_k.append(rand_)
+                gv_tmp.remove(rand_)
+
+            k_y[k] = k_y[k] + tmp_k
+        
+        print(k_y)
+        gv_in_hd = [-1]*self.num_teacher
+
+        for i in range(self.num_council):
+            for j in k_y[i]:
+                gv_in_hd[j] = i
+
+        print(gv_in_hd)
+
+
+        def timK_X(self, gv_in_hd):
+            k_x = {}
+            for i in range(self.num_council):
+                k_x[i] = []
+
+            da_can_hd = {}
+            for i in range(self.num_thesis):
+                gvhd = self.thesis_teacher[i] - 1 
+                hd_dont_in =  gv_in_hd[gvhd]
+                
+                hdcan = [hd for hd in range(self.num_council)]
+                hdcan.remove(hd_dont_in)
+                da_can_hd[i] = hdcan
+            
+            print(da_can_hd[0])
+            
+            hd_con = [self.num_thesis_in_council_upper_bound]*self.num_council
+            
+            for i in range(self.num_thesis):
+
+                for j in range(self.num_council):
+                    if (hd_con[j] == 0) and (j in da_can_hd[i]) :  da_can_hd[i].remove(j)    
+                print(i, da_can_hd[i])
+
+                if da_can_hd[i] == []: return timK_X(self, gv_in_hd)
+                # print(da_can_hd)
+                hd = random.choice(da_can_hd[i])
+                k_x[hd] = k_x[hd] + [i]
+                hd_con[hd] -=  1
+
+            print(k_x)
+            return k_x
+
+        k_x = timK_X(self, gv_in_hd)
+        self.k_x = k_x
+        self.k_y = k_y
+        x = [-1]*self.num_thesis
+        y = [-1]*self.num_teacher
+
+        for i in range(self.num_council):
+            for j in k_x[i]:
+                x[j] = i
+            for m in k_y[i]:
+                y[m] = i
+
+        self.x = x
+        self.y = y
 
     def distribute_thesis(self, banned_thesis_in_council):
 
@@ -101,29 +181,26 @@ class Solution():
         
 
         
-    def init_Sol(self):
-        random.shuffle(self.teacher_list)
+    # def init_Sol(self):
+    #     random.shuffle(self.teacher_list)
     
-        num_teacher_in_council = distribute_candies(self.num_teacher_in_council_lower_bound, self.num_teacher_in_council_upper_bound, self.num_council, self.num_teacher)
-        marker = 0
+    #     num_teacher_in_council = distribute_candies(self.num_teacher_in_council_lower_bound, self.num_teacher_in_council_upper_bound, self.num_council, self.num_teacher)
+    #     marker = 0
 
-        banned_thesis_in_council = [list() for i in range(self.num_council)]
+    #     banned_thesis_in_council = [list() for i in range(self.num_council)]
 
 
-        for council_id in range(self.num_council):
-            for teacher_id in self.teacher_list[marker: marker + num_teacher_in_council[council_id]]:
-                self.teacher_allocation[teacher_id] = council_id
-                for thesis_id in self.teacher_thesis[teacher_id]:
-                    banned_thesis_in_council[council_id].append(thesis_id)
-            marker += num_teacher_in_council[council_id]
+    #     for council_id in range(self.num_council):
+    #         for teacher_id in self.teacher_list[marker: marker + num_teacher_in_council[council_id]]:
+    #             self.teacher_allocation[teacher_id] = council_id
+    #             for thesis_id in self.teacher_thesis[teacher_id]:
+    #                 banned_thesis_in_council[council_id].append(thesis_id)
+    #         marker += num_teacher_in_council[council_id]
   
 
-        self.distribute_thesis(banned_thesis_in_council)  
+    #     self.distribute_thesis(banned_thesis_in_council)  
 
-        self.tinhk_xy()
-
-
-
+    #     self.tinhk_xy()
 
     def rang_buoc(self)->bool:
         # RB1
