@@ -22,17 +22,17 @@ class Ga():
         self.path_output = sol.path_output
 
     def run(self):
-        # with open(self.path_output, 'w') as file:
-        #     file.truncate(0)
+        with open(self.path_output, 'w') as file:
+            file.truncate(0)
         # khoi toa quan the
         self.initialize_population()
         # tinh ham muc tieu
         self.evaluate_population()
         # sap xep chon loc
         self.sort_selective()
-        for gen in (range(self.Gen)):
+        for gen in tqdm(range(self.Gen)):
             # in ra ca the tot nhat
-            # self.print_gen(gen)
+            self.print_gen(gen)
             # sinh san
             self.reproductionss()
             # tinh ham muc tieu
@@ -50,6 +50,7 @@ class Ga():
         for i in (self.pop[self.top_fitness[0]].teacher_allocation):
             a += str(i) + " "
         print(a)
+        print(self.top_fitness[1])
 
     def reproductionss(self):
         child = []

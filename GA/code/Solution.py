@@ -64,6 +64,8 @@ class Solution():
         self.thesis_list = list(range(N))
         self.teacher_list = list(range(M))
         self.teacher_thesis = [list() for x in range(self.num_teacher)]
+
+        self.valid = True
         for i in range(self.num_thesis):
 
             self.teacher_thesis[self.thesis_teacher[i]-1].append(i)
@@ -75,15 +77,21 @@ class Solution():
         num_thesis_in_council = self.num_council * [0]
         full_council = []
 
+        thesis_distributed = 0
         for council_id in range(self.num_council):
             random.shuffle(banned_thesis_in_council[council_id])
             the_rest_of_the_councils = range_exclude(0, self.num_council, [council_id] + full_council)
+            if len(the_rest_of_the_councils) == 0:
+                self.valid = False
+                return 0
             random.shuffle(the_rest_of_the_councils)
             
             i = 0
             for thesis_id in banned_thesis_in_council[council_id]:
                 distribute_to_council = the_rest_of_the_councils[i]
-               
+                self.thesis_allocation[thesis_id] = distribute_to_council
+                thesis_distributed += 1
+
                 i += 1
                 if i == len(the_rest_of_the_councils):
                     i = 0
@@ -93,9 +101,16 @@ class Solution():
                 if num_thesis_in_council[distribute_to_council] == self.num_thesis_in_council_upper_bound:
                     full_council.append(distribute_to_council)
                     the_rest_of_the_councils.remove(distribute_to_council)
+                    if len(the_rest_of_the_councils) == 0:
+                        if thesis_distributed == self.num_thesis:
+                            self.valid = True
+                        else:
+                            self.valid = False
+                        return 0
                     i = random.randint(0, len(the_rest_of_the_councils) - 1)
+
+
                 
-                self.thesis_allocation[thesis_id] = distribute_to_council
                 
                 
         
@@ -119,13 +134,13 @@ class Solution():
   
 
         self.distribute_thesis(banned_thesis_in_council)  
-
-        self.tinhk_xy()
-
-
+        if self.valid == True:
+            self.tinhk_xy()
 
 
     def rang_buoc(self)->bool:
+        if self.valid == False:
+            return False
         # RB1
         for so_DA in self.thesis_allocation_map.values():
             if (len(so_DA) > self.num_thesis_in_council_upper_bound) or (len(so_DA) < self.num_thesis_in_council_lower_bound):
